@@ -1,80 +1,117 @@
-//write a function computerPlay that randomly select one of the game items
-// create a variable with game items; rock, paper, scissors
+const today = new Date();
+const thisYear = today.getFullYear()
+const footer = document.querySelector('footer');
+const copyright = document.createElement('p');
+copyright.innerHTML = `<span> &copy; erickarthurs ${thisYear}</span> `;
+footer.appendChild(copyright);
 
-const computerPlay = function () {
-    const gameitems = ['rock', 'paper', 'scissors'];
-    const randItem = gameitems[Math.floor(Math.random() * gameitems.length)].toLowerCase();
-
-    return randItem;
-}
-
-//write a function for the user. Should prompt the user to in put a game item, return the game item
-const humanPlay = function () {
-    const playerSelect = prompt("To start playing, please choose one item: rock, scissors, paper:")
-    return playerSelect.toLowerCase();
-}
-
-//write a function that plays a single round of Rock, Paper, Scissors
-// function takes two parameters, computerSelection and playerSelection
-//function returns a string that declares a winner
-
-
-function playRound(computerSeletion, playerSelection) {
-    if (computerSeletion === playerSelection) {
-        return "Draw!";
-
-    } else if (computerSeletion === 'rock' && playerSelection === 'scissors') {
-        computerScore++;
-        return "You lose, Computer wins!";
-
-    } else if (computerSeletion === 'scissors' && playerSelection === 'rock') {
-        userScore++;
-        return "You win";
-
-    } else if (computerSeletion === 'scissors' && playerSelection === 'paper') {
-        computerScore++;
-        return "You lose, Computer wins!";
-
-    } else if (computerSeletion === 'paper' && playerSelection === 'scissors') {
-        userScore++;
-        return "You win";
-
-    } else if (computerSeletion === 'paper' && playerSelection === 'rock') {
-        computerScore++;
-        return "You lose, Computer wins!";
-
-    } else if (computerSeletion === 'rock' && playerSelection === 'paper') {
-        userScore++;
-        return "You win";
-
-    } else {
-        return "Invalide play, please try again!"
-    }
-
-}
-// const computerSeletion = computerPlay();
-// const playerSelection = humanPlay();
-
-// console.log(computerSeletion);
-// console.log(playerSelection);
-
-//write a function game() that plays 5 rounds of rock, paper, scissors
-// game() keeps tab of winners
-//reports winner at the end of the rounds
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
 
 let computerScore = parseInt(0);
 let userScore = parseInt(0);
 
-function game() {
-    for (let i = 1; i <= 5; i++) {
-        let playerSelection = humanPlay();
-        const computerSeletion = computerPlay();
-        const winner = computerScore > userScore ? "Computer Wins" : computerScore < userScore ? "You Win" : "It's a draw";
-        console.log(playRound(computerSeletion, playerSelection));
-        console.log("You score = " + userScore);
-        console.log("Computer Scores = " + computerScore);
-        console.log(winner);
+const userScore_span = document.getElementById('user-score');
+const computerScore_span = document.getElementById('computer-score');
+
+const scoreBoard_div = document.querySelector('.scoreBoard');
+const result_p = document.querySelector('.results > p');
+const winner_p = document.querySelector('.winner > p');
+//write a function computerPlay that randomly select one of the game items
+// create a variable with game items; rock, paper, scissors
+
+
+ function computerPlay () {
+    const gameItems = ['rock', 'paper', 'scissors'];
+    const randItem = gameItems[Math.floor(Math.random() * gameItems.length)];
+    // console.log(randItem);
+    return randItem;
+};
+
+function winner(){
+    if(userScore >= 5 && userScore > computerScore){
+        winner_p.innerHTML = `Congratulations, You are the champ 🥇🏆!`;
+    }else if(computerScore >=5 && computerScore > userScore){
+        winner_p.innerHTML =`Sorry, You lost to the machine 😞Try again!`;
     }
 }
 
-game();
+
+function userLose(computerSelection, playerSelection){
+    computerScore++;
+    computerScore_span.innerHTML = computerScore;
+    result_p.innerHTML = `${computerSelection} beats ${playerSelection}. Computer Wins!🙃"`;
+    document.getElementById(playerSelection).classList.add('red-glow');
+    setTimeout(() => document.getElementById(playerSelection).classList.remove('red-glow'), 300);
+
+    winner();
+
+}
+
+function userWins(computerSelection, playerSelection){
+    userScore++;
+    userScore_span.innerHTML = userScore;
+    result_p.innerHTML = `${playerSelection} beats ${computerSelection}. You Win!🎈"`;
+    document.getElementById(playerSelection).classList.add('green-glow');
+    setTimeout(() => document.getElementById(playerSelection).classList.remove('green-glow'), 300);
+
+    winner();
+}
+
+function drawGame(computerSelection, playerSelection){
+    result_p.innerHTML = `${computerSelection} and ${playerSelection}. It's a draw!🙂"`;
+    document.getElementById(playerSelection).classList.add('orange-glow');
+    setTimeout(()=> document.getElementById(playerSelection).classList.remove('orange-glow'), 300);
+}
+
+
+function humanPlay(playerSelection){
+    const computerSelection = computerPlay();
+    switch(`${computerSelection} ${playerSelection}`){
+        case "rock scissors":
+        case "scissors paper":
+        case "paper rock":
+            // console.log(userScore, computerScore, "You lose, Computer wins!");
+            userLose(computerSelection, playerSelection);
+            break;
+
+        case "scissors rock":
+        case "paper scissors":
+        case "rock paper":
+          
+            // console.log(userScore, computerScore,"You win!");
+            userWins(computerSelection, playerSelection);
+            break;
+
+        case "rock rock":
+        case "scissors scissors":
+        case "paper paper":
+            // console.log(userScore, computerScore, "It's a draw!");
+            drawGame(computerSelection, playerSelection);
+            break;
+        default:
+            "Please try again!"
+    }
+};
+
+    function playRound(){
+
+    rock.addEventListener('click', (e) => {
+         humanPlay('rock');
+        // console.log('rock');
+        return 'rock';
+    })
+    paper.addEventListener('click', (e) => {
+        humanPlay('paper');
+        // console.log('paper');
+        return 'paper';
+    })
+    scissors.addEventListener('click', (e) => {
+        humanPlay('scissors');
+        // console.log('scissors');
+        return'scissors';
+    })
+ };
+ 
+ playRound();

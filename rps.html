@@ -6,10 +6,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="rps.css">
+    <script src="node_modules/confetti-js/dist/index.min.js"></script>
 </head>
 
 <body>
-    <script src="rps.js"></script>
+    <header id="fixed-header">
+        <h1>Rock Paper Scissors</h1>
+    </header>
+<div class="background-image"></div>
+
+<section class="content">
+    <div class="scoreBoard">
+        <div id="user-label" class="badge">You</div>
+        <div id="computer-label" class="badge">Computer</div>
+        <span id="user-score">0</span>:<span id="computer-score">0</span>
+        </div>
+
+        <p id="action-message">Make your choice</p>
+
+    <div class="buttons">
+       <div class="BUTTON" id="rock"><img src="/images//hand-back-fist-solid.svg" height="50px" width="50px"></div>
+       <div class="BUTTON" id="paper"><img src="/images/hand-solid.svg" height="50px" width="50px""></div>
+       <div class="BUTTON" id="scissors"><img src="/images/hand-scissors-solid.svg" height="50px" width="50px"></div>
+    </div>
+
+    <div class="results">
+        <p></p>
+    </div>
+
+    <div class="winner">
+        <p></p>
+    </div>
+
+   </section>
+
+   <div id="footer">
+    <footer></footer>
+
+</div>
+        <script src="rps.js"></script>
 </body>
 
 </html>
